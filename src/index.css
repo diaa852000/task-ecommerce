@@ -2,3 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+
+* { 
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, html {
+    font-family: "Raleway", sans-serif;
+    scroll-behavior: smooth;
+}
+
+
+.main-container {
+    @apply max-w-[1440px] w-full mx-auto p-2 md:py-4 md:px-16
+}
+
+.active-link {
+    @apply text-[#5ECE7B] border-b border-[#5ECE7B] transition-all ease-in-out duration-200
+}
