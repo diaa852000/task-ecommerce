@@ -66,6 +66,7 @@ export default class Header extends Component {
                         </button>
                     </div>
                 </nav>
+                {this.state.isOpenCart && <div className="overlay" onClick={this.toggleCart}></div>}
 
                 {this.state.isOpenCart && <Cart />}
             </div>

@@ -36,3 +36,8 @@ body, html {
     @apply outline outline-1 outline-offset-1 outline-primary
 }
 /* end active classes */
+
+.overlay {
+    @apply fixed top-[80px] left-0 w-full h-full bg-black/50 z-10
+}
+

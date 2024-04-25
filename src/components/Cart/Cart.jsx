@@ -5,7 +5,7 @@ export default class Cart extends Component {
 
     render() {
         return (
-            <div className='fixed top-[80px] left-0 w-full h-full bg-[#d3d3d7] overflow-hidden z-20'>
+            <div className='fixed top-[80px] left-0 w-full h-full overflow-hidden z-30'>
                 <div className='w-full sm:w-[325px] z-30 bg-white absolute top-0 sm:right-[2.5%] min-[1440px]:right-[2.3%] min-[1500px]:right-[12%]
                     shadow-sm p-4 flex flex-col gap-4'
                 >
