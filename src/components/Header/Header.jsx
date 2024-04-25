@@ -3,8 +3,7 @@ import navlinks from '../../fixtures/navlinks'
 import { Link } from 'react-router-dom'
 import logo from '../../assets/a-logo.png'
 import cartIcon from '../../assets/cart.svg'
-import Cart from '../Cart/Cart'
-
+import {Cart} from '../'
 export default class Header extends Component {
     constructor() {
         super();
@@ -22,7 +21,7 @@ export default class Header extends Component {
         this.setState({ hoveredLinkId: linkId })
     };
 
-    toggleCart () {
+    toggleCart() {
         this.setState(prevState => {
             return {
                 isOpenCart: !prevState.isOpenCart
@@ -32,7 +31,7 @@ export default class Header extends Component {
 
     render() {
         return (
-            <>
+            <div>
                 <nav className='main-container grid grid-cols-7 h-[80px] text-base font-medium z-30 bg-white'>
                     <ul className='flex flex-row items-center gap-4 col-span-3'>
                         {navlinks.map(navlink => (
@@ -56,18 +55,20 @@ export default class Header extends Component {
                     </Link>
 
                     <div className='col-span-3 flex items-center justify-self-end w-fit relative px-2'>
-                        <span className='absolute top-4 md:top-3.5 -right-0 bg-[#1d1f22] text-white text-[10px] size-4
-                        rounded-full flex justify-center items-center font-bold'>
-                            3
-                        </span>
                         <button type='button' onClick={this.toggleCart}>
+                            <span 
+                                className='absolute top-4 md:top-3.5 -right-0 bg-[#1d1f22] text-white text-[10px] size-4 outline-none
+                                rounded-full flex justify-center items-center font-bold'
+                            >
+                                3
+                            </span>
                             <img src={cartIcon} alt="cartIcon" />
                         </button>
                     </div>
                 </nav>
 
-                {this.state.isOpenCart && <Cart/>}
-            </>
+                {this.state.isOpenCart && <Cart />}
+            </div>
         )
     }
 };

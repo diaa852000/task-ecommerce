@@ -4,6 +4,7 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
 
+/* general */
 * { 
     margin: 0;
     padding: 0;
@@ -14,12 +15,24 @@ body, html {
     font-family: "Raleway", sans-serif;
     scroll-behavior: smooth;
 }
+/* end general */
 
-
+/* containers */
 .main-container {
     @apply max-w-[1440px] w-full mx-auto p-2 md:py-3 md:px-10
 }
+/* end containers */
 
+/* active classes */
 .active-link {
     @apply text-primary border-b border-primary transition-all ease-in-out duration-200
 }
+
+.active-size {
+    @apply bg-secondary text-white
+}
+
+.active-color {
+    @apply outline outline-1 outline-offset-1 outline-primary
+}
+/* end active classes */
