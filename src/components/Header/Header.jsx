@@ -32,7 +32,7 @@ export default class Header extends Component {
     render() {
         return (
             <div>
-                <nav className='main-container grid grid-cols-7 h-[80px] text-base font-medium z-30 bg-white'>
+                <nav className='main-container grid grid-cols-7 h-[80px] text-base font-medium z-30 bg-white px-4'>
                     <ul className='flex flex-row items-center gap-4 col-span-3'>
                         {navlinks.map(navlink => (
                             <li
