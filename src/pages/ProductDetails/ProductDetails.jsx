@@ -8,11 +8,12 @@ class ProductDetails extends Component {
         super(props);
 
         this.imgRef = createRef(null);
-        this.handleChangeImage = this.handleChangeImage.bind(this);
+        this.handleChooseImg = this.handleChooseImg.bind(this);
+        this.handleSwapImages = this.handleSwapImages.bind(this);
     }
 
 
-    handleChangeImage(e) {
+    handleChooseImg(e) {
         if (this.imgRef !== null && this.imgRef !== undefined) {
             const renderedImgEle = this.imgRef.current;
             const imgSrc = e.target.getAttribute('src');
@@ -20,10 +21,10 @@ class ProductDetails extends Component {
         }
     }
 
-
-    componentDidUpdate() {
-        this.handleChangeImage();
+    handleSwapImages() {
+        
     }
+
 
     render() {
         const { params } = this.props.router;
@@ -38,40 +39,40 @@ class ProductDetails extends Component {
                             <img
                                 src="https://cdn.shopify.com/s/files/1/0087/6193/3920/products/DD1381200_DEOA_2_720x.jpg?v=1612816087"
                                 alt="demo1"
-                                className='object-cover object-center w-full h-full'
-                                onClick={(e) => this.handleChangeImage(e)}
+                                className='cursor-pointer object-cover object-center w-full h-full'
+                                onClick={(e) => this.handleChooseImg(e)}
                             />
                         </div>
                         <div className='max-w-[79px] max-h-[80px]'>
                             <img
                                 src="https://cdn.shopify.com/s/files/1/0087/6193/3920/products/DD1381200_DEOA_1_720x.jpg?v=1612816087"
                                 alt="demo"
-                                className='object-cover object-center w-full h-full'
-                                onClick={(e) => this.handleChangeImage(e)}
+                                className='cursor-pointer object-cover object-center w-full h-full'
+                                onClick={(e) => this.handleChooseImg(e)}
                             />
                         </div>
                         <div className='max-w-[79px] max-h-[80px]'>
                             <img
                                 src="https://cdn.shopify.com/s/files/1/0087/6193/3920/products/DD1381200_DEOA_2_720x.jpg?v=1612816087"
                                 alt="demo"
-                                className='object-cover object-center w-full h-full'
-                                onClick={(e) => this.handleChangeImage(e)}
+                                className='cursor-pointer object-cover object-center w-full h-full'
+                                onClick={(e) => this.handleChooseImg(e)}
                             />
                         </div>
                         <div className='max-w-[79px] max-h-[80px]'>
                             <img
                                 src="https://cdn.shopify.com/s/files/1/0087/6193/3920/products/DD1381200_DEOA_2_720x.jpg?v=1612816087"
                                 alt="demo"
-                                className='object-cover object-center w-full h-full'
-                                onClick={(e) => this.handleChangeImage(e)}
+                                className='cursor-pointer object-cover object-center w-full h-full'
+                                onClick={(e) => this.handleChooseImg(e)}
                             />
                         </div>
                         <div className='max-w-[79px] max-h-[80px]'>
                             <img
                                 src="https://cdn.shopify.com/s/files/1/0087/6193/3920/products/DD1381200_DEOA_2_720x.jpg?v=1612816087"
                                 alt="demo"
-                                className='object-cover object-center w-full h-full'
-                                onClick={(e) => this.handleChangeImage(e)}
+                                className='cursor-pointer object-cover object-center w-full h-full'
+                                onClick={(e) => this.handleChooseImg(e)}
                             />
                         </div>
                     </div>

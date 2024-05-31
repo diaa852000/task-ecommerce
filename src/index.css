@@ -26,13 +26,13 @@ body, html {
 
 .grid-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(368px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(386px, 1fr));
     gap: 1rem;
 }
 
 @media screen and (max-width: 860px) {
     .grid-container{
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(auto-fit, minmax(386px, 1fr));
         justify-content: center;
     }
 }
@@ -41,6 +41,12 @@ body, html {
     .grid-container{
         grid-template-columns: 386px;
         justify-content: center;
+    }
+}
+
+@media screen and (max-width: 400px){
+    .grid-container{
+        grid-template-columns: 300px;
     }
 }
 /* end containers */

@@ -11,6 +11,7 @@ export default class Header extends Component {
         this.state = {
             hoveredLinkId: null,
             isOpenCart: false,
+            activeLink: window.location.pathname,
         };
 
         this.hoverNavLink = this.hoverNavLink.bind(this);
@@ -29,6 +30,18 @@ export default class Header extends Component {
         })
     };
 
+    componentDidMount() {
+        const activeLink = window.location.pathname;
+        console.log(activeLink)
+    }
+    
+    componentDidUpdate(prevProps, prevState) {
+        const activeLink = window.location.pathname;
+        if (prevState.activeLink !== activeLink) {
+            this.setState({ activeLink });
+        }
+    }
+
     render() {
         return (
             <div>
@@ -37,10 +50,9 @@ export default class Header extends Component {
                         {navlinks.map(navlink => (
                             <li
                                 key={navlink.id}
-                                className={`uppercase ${this.state.hoveredLinkId === navlink.id && 'active-link'}`}
+                                className={`uppercase ${this.state.hoveredLinkId === navlink.id && 'active-link'} ${this.state.activeLink === navlink.route && 'active-link'}`}
                                 onMouseEnter={() => this.hoverNavLink(navlink.id)}
                                 onMouseLeave={() => this.hoverNavLink(null)}
-                                onClick={() => this.hoverNavLink(navlink.id)}
                             >
                                 <Link to={navlink.route}>{navlink.label}</Link>
                             </li>
