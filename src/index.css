@@ -77,10 +77,9 @@ html {
 }
 
 .custom-scrollbar-PDP {
-    /* Hide default scrollbar for IE, Edge, and Firefox */
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: thin;  /* Firefox */
-    scrollbar-color: #888 #f1f1f1;  /* Firefox: color for thumb and track */
+    -ms-overflow-style: none;  
+    scrollbar-width: thin;  
+    scrollbar-color: #888 #f1f1f1; 
 }
 
 .custom-scrollbar-PDP::-webkit-scrollbar {
@@ -88,3 +87,6 @@ html {
     width: 2px;  
 }
 
+.card-shadow{
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}

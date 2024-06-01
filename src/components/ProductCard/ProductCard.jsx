@@ -46,7 +46,7 @@ class ProductCard extends Component {
                 onMouseEnter={this.handleHovere}
                 onMouseLeave={this.handleHovere}
                 onClick={this.handleClick}
-                className={`relative flex flex-col justify-self-center sm:justify-self-auto p-3 cursor-pointer transition-all ease-in-out duration-200 ${this.state.isHovered && 'shadow-primaryShadow'} h-[500px]`}
+                className={`relative flex flex-col justify-self-center sm:justify-self-auto p-3 cursor-pointer transition-all ease-in-out duration-200 ${this.state.isHovered && 'card-shadow'} h-[500px]`}
             >
                 <div className="flex-1 overflow-hidden">
                     <div className='h-full w-full relative'>

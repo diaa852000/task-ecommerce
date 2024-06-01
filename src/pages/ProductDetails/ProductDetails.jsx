@@ -66,7 +66,7 @@ class ProductDetails extends Component {
                                     ))}
                                 </div>
 
-                                <div className='relative w-full sm:w-[500px] xl:w-[675px] overflow-hidden'>
+                                <div className='relative w-full lg:w-[500px] xl:w-[675px] overflow-hidden'>
                                     <button
                                         type="button"
                                         className='absolute top-1/2 left-4 transform -translate-y-1/2'
@@ -92,27 +92,37 @@ class ProductDetails extends Component {
 
                             {/* HERE'S THE CONTENT */}
                             <div className='flex flex-col lg:flex-row flex-1 justify-start mt-8 lg:mt-0'>
-                                <div className='flex flex-col flex-grow gap-6 lg:max-w-[320px] px-2'>
+                                <div className='flex flex-col flex-grow gap-6 px-2 w-full'>
                                     <h1 className='text-3xl font-semibold capitalize'>{product?.name}</h1>
                                     <div className='flex flex-col gap-4'>
                                         {product && product?.attributes?.map((attribute, i) => (
                                             <div key={i}>
                                                 <p className='uppercase font-bold text-lg font-roboto'>{attribute.name}</p>
                                                 <div className='flex items-center justify-start gap-1.5'>
-                                                    {attribute?.items?.map((item, i) => {
-                                                        if(attribute.id === "Color"){
-                                                            // console.log('first')
-                                                        }
-
-                                                        // TODO: create custom component for each attribute 
-                                                        return (
-                                                            <input 
-                                                            key={i}
-                                                            type='radio' 
-                                                            className={`cursor-pointer size-8 shadow-sm appearance-none border border-black/35`} 
-                                                            style={{background:attribute?.id === 'Color' && item?.value}}
+                                                    {attribute?.items?.map((item, i) => (
+                                                        attribute?.id === "Color" ?
+                                                            <input
+                                                                key={i}
+                                                                type='radio'
+                                                                value={item?.value}
+                                                                className={`cursor-pointer size-8 shadow-sm appearance-none border border-black/35`}
+                                                                style={{ background: item?.value }}
                                                             />
-                                                    )})}
+                                                            : <label
+                                                                htmlFor={item?.id}
+                                                                key={i}
+                                                                className='uppercase cursor-pointer border border-black w-[70px] h-[45px] flex items-center justify-center'
+                                                            >
+                                                                <input
+                                                                    type='radio'
+                                                                    id={item?.id}
+                                                                    name={item?.id}
+                                                                    value={item?.value}
+                                                                    className={`appearance-none hidden`}
+                                                                />
+                                                                <span className='font-medium text-base'>{item?.value}</span>
+                                                            </label>
+                                                    ))}
                                                 </div>
                                             </div>
                                         ))}
@@ -128,7 +138,8 @@ class ProductDetails extends Component {
                                     <div>
                                         <button
                                             type="submit"
-                                            className='bg-primary text-center text-white uppercase font-semibold text-sm rounded-sm w-full py-4 hover:bg-green-500 transition-all ease-in-out duration-200'
+                                            className='bg-primary text-center text-white uppercase font-semibold text-sm rounded-sm w-full py-4 
+                                            hover:bg-green-500 transition-all ease-in-out duration-200 lg:max-w-[320px]'
                                         >
                                             add to cart
                                         </button>
