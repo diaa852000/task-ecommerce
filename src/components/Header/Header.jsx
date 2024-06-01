@@ -34,7 +34,7 @@ export default class Header extends Component {
         const activeLink = window.location.pathname;
         console.log(activeLink)
     }
-    
+
     componentDidUpdate(prevProps, prevState) {
         const activeLink = window.location.pathname;
         if (prevState.activeLink !== activeLink) {

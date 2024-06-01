@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import ProductCard from '../../components/ProductCard/ProductCard'
 import { Outlet } from 'react-router';
 
 export default class Categories extends Component {
