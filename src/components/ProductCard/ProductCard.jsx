@@ -36,6 +36,7 @@ class ProductCard extends Component {
     }
 
 
+
     render() {
         const { product } = this.props;
 

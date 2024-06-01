@@ -6,13 +6,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap');
 
 /* general */
-* { 
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-body, html {
+body,
+html {
     scroll-behavior: smooth;
     font-family: "Raleway", sans-serif;
 }
@@ -31,24 +32,25 @@ body, html {
 }
 
 @media screen and (max-width: 860px) {
-    .grid-container{
+    .grid-container {
         grid-template-columns: repeat(auto-fit, minmax(386px, 1fr));
         justify-content: center;
     }
 }
 
 @media screen and (max-width: 560px) {
-    .grid-container{
+    .grid-container {
         grid-template-columns: 386px;
         justify-content: center;
     }
 }
 
-@media screen and (max-width: 400px){
-    .grid-container{
+@media screen and (max-width: 400px) {
+    .grid-container {
         grid-template-columns: 300px;
     }
 }
+
 /* end containers */
 
 /* active classes */
@@ -73,3 +75,16 @@ body, html {
 .category-title {
     @apply text-3xl font-light mb-16 px-1
 }
+
+.custom-scrollbar-PDP {
+    /* Hide default scrollbar for IE, Edge, and Firefox */
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: thin;  /* Firefox */
+    scrollbar-color: #888 #f1f1f1;  /* Firefox: color for thumb and track */
+}
+
+.custom-scrollbar-PDP::-webkit-scrollbar {
+    height: 2px; 
+    width: 2px;  
+}
+

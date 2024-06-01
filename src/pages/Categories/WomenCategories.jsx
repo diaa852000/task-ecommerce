@@ -1,86 +1,9 @@
 import React, { Component } from 'react'
 import { ProductCard } from '../../components';
-import { gql } from '@apollo/client';
 import { Query } from '@apollo/client/react/components';
-
-
-const getProductsQuery = gql`
-    {
-        products {
-            id
-            name
-            brand
-            inStock
-            description
-            category
-            prices {
-              amount
-              currency {
-                label
-                symbol
-                __typename
-              }
-              __typename
-            }
-            gallery
-            attributes { 
-              id
-              name
-              type
-              items {
-                displayValue
-                value
-                id
-                __typename
-              }
-              __typename
-            }
-            __typename
-          }
-    }
-`;
-
+import { getProductsQuery } from '../../lib/query';
 
 export default class WomenCategories extends Component {
-    constructor() {
-        super();
-
-        this.state = {
-            products: [
-                {
-                    id: 1,
-                    name: 'Basic Tee',
-                    href: '#',
-                    imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-                    imageAlt: "Front of men's Basic Tee in black.",
-                    price: '$35',
-                    color: 'Black',
-                },
-                {
-                    id: 2,
-                    name: 'Basic Tee',
-                    href: '#',
-                    imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-                    imageAlt: "Front of men's Basic Tee in black.",
-                    price: '$35',
-                    color: 'Black',
-                },
-                {
-                    id: 3,
-                    name: 'Basic Tee',
-                    href: '#',
-                    imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-                    imageAlt: "Front of men's Basic Tee in black.",
-                    price: '$35',
-                    color: 'Black',
-                },
-            ]
-        }
-    }
-
-    componentDidMount() {
-
-    }
 
     render() {
         return (
