@@ -2,15 +2,15 @@ import { Component, createRef } from 'react'
 import withRouter from '../../HOC/WithRouter';
 import leftArrow from '../../assets/left-arrow.svg'
 import rightArrow from '../../assets/right-arrow.svg'
-import { Query } from '@apollo/client/react/components';
-import { getSingleProductQuery } from '../../lib/query';
+import withProductData from '../../HOC/WithProductData';
 
 class ProductDetails extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            currentImg: ''
+            currentImg: '',
+            currentIndex: 0,
         }
 
         this.imgRef = createRef(null);
@@ -18,142 +18,159 @@ class ProductDetails extends Component {
         this.handleSwapImages = this.handleSwapImages.bind(this);
     }
 
-
     handleChooseImg(e) {
-        if (this.imgRef !== null && this.imgRef !== undefined) {
-            const renderedImgEle = this.imgRef.current;
+        const { product } = this.props;
+        if (product && product.gallery) {
             const imgSrc = e.target.getAttribute('src');
-            this.setState({ currentImg: imgSrc });
-            renderedImgEle.setAttribute('src', imgSrc);
+            const currentIndex = product.gallery.indexOf(imgSrc);
+            this.setState({ currentImg: imgSrc, currentIndex });
         }
     }
 
-    handleSwapImages() {
+    handleSwapImages(direction) {
+        const { product } = this.props;
+        if (!product || !product.gallery || product.gallery.length === 0) return;
 
+        const { currentIndex } = this.state;
+        let nextIndex;
+
+        if (direction === 'right') {
+            nextIndex = (currentIndex + 1) % product.gallery.length;
+        } else {
+            nextIndex = (currentIndex - 1 + product.gallery.length) % product.gallery.length;
+        }
+
+        const nextImg = product.gallery[nextIndex];
+        this.setState({ currentImg: nextImg, currentIndex: nextIndex });
     }
 
-    componentDidUpdate() {
-
+    componentDidMount() {
+        const { product } = this.props;
+        if (product && product.gallery && product.gallery.length > 0) {
+            this.setState({ currentImg: product.gallery[0], currentIndex: 0 });
+        }
     }
 
+    componentDidUpdate(prevProps) {
+        const { product } = this.props;
+        if (product && product !== prevProps.product && product.gallery && product.gallery.length > 0) {
+            this.setState({ currentImg: product.gallery[0], currentIndex: 0 });
+        }
+    }
 
     render() {
-        const { params } = this.props.router;
-        const { id } = params;
+
+        const { product } = this.props;
+        const { currentIndex } = this.state;
 
         return (
-            <Query query={getSingleProductQuery} variables={{ id: id }}>
-                {({ loading, error, data }) => {
-                    if (loading) return <p>Loading...</p>;
-                    if (error) return <p>Error: {error.message}</p>;
-
-                    const product = data?.product;
-                    return (
-
-                        <div className='main-container flex flex-col lg:flex-row gap-4 lg:gap-28 mt-10'>
-                            {/* HERE'S THE IMAGES */}
-                            <div className='flex flex-col justify-center items-center lg:flex-row lg:items-start gap-10'>
-                                <div className='h-[110px] lg:flex lg:flex-col justify-center lg:justify-start lg:items-center gap-4 lg:h-full overflow-x-scroll sm:overflow-x-auto whitespace-nowrap custom-scrollbar-PDP'>
-                                    {product && product?.gallery?.map((image, i) => (
-                                        <div className='max-w-[79px] max-h-[80px] h-full w-full inline-block mx-2 mt-2' key={i}>
-                                            <img
-                                                src={image}
-                                                alt="demo1"
-                                                className='cursor-pointer object-cover object-center w-full h-full'
-                                                onClick={(e) => this.handleChooseImg(e)}
-                                            />
-                                        </div>
-                                    ))}
-                                </div>
-
-                                <div className='relative w-full lg:w-[500px] xl:w-[675px] overflow-hidden'>
-                                    <button
-                                        type="button"
-                                        className='absolute top-1/2 left-4 transform -translate-y-1/2'
-                                    >
-                                        <img src={leftArrow} alt="left-arrow" />
-                                    </button>
-                                    <div className='w-full aspect-square'>
-                                        <img
-                                            src={product?.gallery[0]}
-                                            alt={product?.id}
-                                            ref={this.imgRef}
-                                            className='object-fill object-top w-full h-full'
-                                        />
-                                    </div>
-                                    <button
-                                        type="button"
-                                        className='absolute top-1/2 right-4 transform -translate-y-1/2'
-                                    >
-                                        <img src={rightArrow} alt="right-arrow" />
-                                    </button>
-                                </div>
+            <div className='main-container flex flex-col lg:flex-row gap-4 lg:gap-28 mt-10'>
+                {/* HERE'S THE IMAGES */}
+                <div className='flex flex-col justify-center items-center lg:flex-row lg:items-start gap-10'>
+                    <div className='h-[110px] w-full text-center lg:w-auto lg:flex lg:flex-col justify-center lg:justify-start lg:items-center gap-4 lg:h-full overflow-x-scroll 
+                                sm:overflow-x-auto whitespace-nowrap custom-scrollbar-PDP'>
+                        {product && product?.gallery?.map((image, i) => (
+                            <div className='max-w-[79px] max-h-[80px] h-full w-full inline-block mx-2 mt-2' key={i}>
+                                <img
+                                    src={image}
+                                    alt="demo1"
+                                    className='cursor-pointer object-cover object-top w-full h-full'
+                                    onClick={(e) => this.handleChooseImg(e)}
+                                />
                             </div>
+                        ))}
+                    </div>
 
-                            {/* HERE'S THE CONTENT */}
-                            <div className='flex flex-col lg:flex-row flex-1 justify-start mt-8 lg:mt-0'>
-                                <div className='flex flex-col flex-grow gap-6 px-2 w-full'>
-                                    <h1 className='text-3xl font-semibold capitalize'>{product?.name}</h1>
-                                    <div className='flex flex-col gap-4'>
-                                        {product && product?.attributes?.map((attribute, i) => (
-                                            <div key={i}>
-                                                <p className='uppercase font-bold text-lg font-roboto'>{attribute.name}</p>
-                                                <div className='flex items-center justify-start gap-1.5'>
-                                                    {attribute?.items?.map((item, i) => (
-                                                        attribute?.id === "Color" ?
-                                                            <input
-                                                                key={i}
-                                                                type='radio'
-                                                                value={item?.value}
-                                                                className={`cursor-pointer size-8 shadow-sm appearance-none border border-black/35`}
-                                                                style={{ background: item?.value }}
-                                                            />
-                                                            : <label
-                                                                htmlFor={item?.id}
-                                                                key={i}
-                                                                className='uppercase cursor-pointer border border-black w-[70px] h-[45px] flex items-center justify-center'
-                                                            >
-                                                                <input
-                                                                    type='radio'
-                                                                    id={item?.id}
-                                                                    name={item?.id}
-                                                                    value={item?.value}
-                                                                    className={`appearance-none hidden`}
-                                                                />
-                                                                <span className='font-medium text-base'>{item?.value}</span>
-                                                            </label>
-                                                    ))}
-                                                </div>
-                                            </div>
+                    <div className='relative w-full lg:w-[500px] xl:w-[675px] overflow-hidden'>
+                        <button
+                            type="button"
+                            className='absolute top-1/2 left-4 transform -translate-y-1/2'
+                            onClick={() => this.handleSwapImages('left')}
+                        >
+                            <img src={leftArrow} alt="left-arrow" />
+                        </button>
+                        <div className='w-full aspect-square'>
+                            <img
+                                src={product?.gallery[currentIndex]}
+                                alt={product?.id}
+                                ref={this.imgRef}
+                                className='object-cover object-top h-full w-full'
+                            />
+                        </div>
+                        <button
+                            type="button"
+                            className='absolute top-1/2 right-4 transform -translate-y-1/2'
+                            onClick={() => this.handleSwapImages('right')}
+                        >
+                            <img src={rightArrow} alt="right-arrow" />
+                        </button>
+                    </div>
+                </div>
+
+                {/* HERE'S THE CONTENT */}
+                {/* //TODO: CONVERT IT INTO FORM TO HANDLE THE ADD CART AND VALIDATION OF THE FORM */}
+                <div className='flex flex-col lg:flex-row flex-1 justify-start mt-8 lg:mt-0'>
+                    <div className='flex flex-col flex-grow gap-6 px-2 w-full'>
+                        <h1 className='text-3xl font-semibold capitalize'>{product?.name}</h1>
+                        <div className='flex flex-col gap-4'>
+                            {product && product?.attributes?.map((attribute, i) => (
+                                <div key={i}>
+                                    <p className='uppercase font-bold text-lg font-roboto'>{attribute.name}</p>
+                                    <div className='flex items-center justify-start gap-1.5'>
+                                        {attribute?.items?.map((item, i) => (
+                                            attribute?.id === "Color" ?
+                                                <input
+                                                    key={i}
+                                                    type='radio'
+                                                    value={item?.value}
+                                                    className={`cursor-pointer size-8 shadow-sm appearance-none border border-black/35`}
+                                                    style={{ background: item?.value }}
+                                                    onClick={() => console.log(item?.value)}
+                                                />
+                                                : <label
+                                                    htmlFor={item?.id}
+                                                    key={i}
+                                                    className='uppercase cursor-pointer border border-black w-[70px] h-[45px] flex items-center justify-center'
+                                                >
+                                                    <input
+                                                        type='radio'
+                                                        id={item?.id}
+                                                        name={item?.id}
+                                                        value={item?.value}
+                                                        className={`appearance-none hidden`}
+                                                    />
+                                                    <span className='font-medium text-base'>{item?.value}</span>
+                                                </label>
                                         ))}
                                     </div>
-
-                                    <div className=''>
-                                        <p className='uppercase font-roboto text-lg font-bold'>price:</p>
-                                        <div className='font-bold text-2xl mt-1 flex items-center justify-start'>
-                                            <p>{product?.prices[0]?.currency?.symbol}</p>
-                                            <p>{product?.prices[0]?.amount}</p>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <button
-                                            type="submit"
-                                            className='bg-primary text-center text-white uppercase font-semibold text-sm rounded-sm w-full py-4 
-                                            hover:bg-green-500 transition-all ease-in-out duration-200 lg:max-w-[320px]'
-                                        >
-                                            add to cart
-                                        </button>
-                                    </div>
-                                    <div className='text-balance font-roboto text-base' dangerouslySetInnerHTML={{ __html: product?.description }} />
-
                                 </div>
+                            ))}
+                        </div>
+
+                        <div className=''>
+                            <p className='uppercase font-roboto text-lg font-bold'>price:</p>
+                            <div className='font-bold text-2xl mt-1 flex items-center justify-start'>
+                                <p>{product?.prices[0]?.currency?.symbol}</p>
+                                <p>{product?.prices[0]?.amount}</p>
                             </div>
                         </div>
-                    )
-                }}
-            </Query>
+                        <div>
+                            <button
+                                type="submit"
+                                className='bg-primary text-center text-white uppercase font-semibold text-sm rounded-sm w-full py-4 
+                                            hover:bg-green-500 transition-all ease-in-out duration-200 lg:max-w-[320px]'
+                            >
+                                add to cart
+                            </button>
+                        </div>
+                        <div className='text-balance font-roboto text-base' dangerouslySetInnerHTML={{ __html: product?.description }} />
+
+                    </div>
+                </div>
+            </div>
         );
     }
 }
 
-export default withRouter(ProductDetails);
+
+export default withRouter(withProductData(ProductDetails)); 
