@@ -10,20 +10,41 @@ class ProductDetails extends Component {
 
         this.state = {
             currentImg: '',
-            currentIndex: 0,
+            currentImgIndex: 0,
+            formData: {}
         }
 
         this.imgRef = createRef(null);
         this.handleChooseImg = this.handleChooseImg.bind(this);
         this.handleSwapImages = this.handleSwapImages.bind(this);
+        this.onChange = this.onChange.bind(this);
+        this.handleOnSubmit = this.handleOnSubmit.bind(this);
+    }
+
+    onChange(e) {        
+        this.setState((prevState) => ({
+            formData: {
+                ...prevState.formData,
+                [e.target.name]: e.target.value
+            }
+        }));
+    }
+
+    handleOnSubmit(e) {
+        const {formData} = this.state;
+        
+        e.preventDefault();
+        
+        console.log(formData);
+
     }
 
     handleChooseImg(e) {
         const { product } = this.props;
         if (product && product.gallery) {
             const imgSrc = e.target.getAttribute('src');
-            const currentIndex = product.gallery.indexOf(imgSrc);
-            this.setState({ currentImg: imgSrc, currentIndex });
+            const currentImgIndex = product.gallery.indexOf(imgSrc);
+            this.setState({ currentImg: imgSrc, currentImgIndex });
         }
     }
 
@@ -31,37 +52,36 @@ class ProductDetails extends Component {
         const { product } = this.props;
         if (!product || !product.gallery || product.gallery.length === 0) return;
 
-        const { currentIndex } = this.state;
+        const { currentImgIndex } = this.state;
         let nextIndex;
 
         if (direction === 'right') {
-            nextIndex = (currentIndex + 1) % product.gallery.length;
+            nextIndex = (currentImgIndex + 1) % product.gallery.length;
         } else {
-            nextIndex = (currentIndex - 1 + product.gallery.length) % product.gallery.length;
+            nextIndex = (currentImgIndex - 1 + product.gallery.length) % product.gallery.length;
         }
 
         const nextImg = product.gallery[nextIndex];
-        this.setState({ currentImg: nextImg, currentIndex: nextIndex });
+        this.setState({ currentImg: nextImg, currentImgIndex: nextIndex });
     }
 
     componentDidMount() {
         const { product } = this.props;
         if (product && product.gallery && product.gallery.length > 0) {
-            this.setState({ currentImg: product.gallery[0], currentIndex: 0 });
+            this.setState({ currentImg: product.gallery[0], currentImgIndex: 0 });
         }
     }
 
     componentDidUpdate(prevProps) {
         const { product } = this.props;
         if (product && product !== prevProps.product && product.gallery && product.gallery.length > 0) {
-            this.setState({ currentImg: product.gallery[0], currentIndex: 0 });
+            this.setState({ currentImg: product.gallery[0], currentImgIndex: 0 });
         }
     }
 
     render() {
-
         const { product } = this.props;
-        const { currentIndex } = this.state;
+        const { currentImgIndex } = this.state;
 
         return (
             <div className='main-container flex flex-col lg:flex-row gap-4 lg:gap-28 mt-10'>
@@ -91,7 +111,7 @@ class ProductDetails extends Component {
                         </button>
                         <div className='w-full aspect-square'>
                             <img
-                                src={product?.gallery[currentIndex]}
+                                src={product?.gallery[currentImgIndex]}
                                 alt={product?.id}
                                 ref={this.imgRef}
                                 className='object-cover object-top h-full w-full'
@@ -109,7 +129,11 @@ class ProductDetails extends Component {
 
                 {/* HERE'S THE CONTENT */}
                 {/* //TODO: CONVERT IT INTO FORM TO HANDLE THE ADD CART AND VALIDATION OF THE FORM */}
-                <div className='flex flex-col lg:flex-row flex-1 justify-start mt-8 lg:mt-0'>
+
+                <form 
+                    onSubmit={(e) => this.handleOnSubmit(e)}
+                    className='flex flex-col lg:flex-row flex-1 justify-start mt-8 lg:mt-0'
+                >
                     <div className='flex flex-col flex-grow gap-6 px-2 w-full'>
                         <h1 className='text-3xl font-semibold capitalize'>{product?.name}</h1>
                         <div className='flex flex-col gap-4'>
@@ -122,10 +146,13 @@ class ProductDetails extends Component {
                                                 <input
                                                     key={i}
                                                     type='radio'
+                                                    id={item?.id}
+                                                    name={item?.id}
                                                     value={item?.value}
                                                     className={`cursor-pointer size-8 shadow-sm appearance-none border border-black/35`}
                                                     style={{ background: item?.value }}
                                                     onClick={() => console.log(item?.value)}
+                                                    onChange={e => this.onChange(e)}
                                                 />
                                                 : <label
                                                     htmlFor={item?.id}
@@ -138,6 +165,7 @@ class ProductDetails extends Component {
                                                         name={item?.id}
                                                         value={item?.value}
                                                         className={`appearance-none hidden`}
+                                                        onChange={e => this.onChange(e)}
                                                     />
                                                     <span className='font-medium text-base'>{item?.value}</span>
                                                 </label>
@@ -147,7 +175,7 @@ class ProductDetails extends Component {
                             ))}
                         </div>
 
-                        <div className=''>
+                        <div>
                             <p className='uppercase font-roboto text-lg font-bold'>price:</p>
                             <div className='font-bold text-2xl mt-1 flex items-center justify-start'>
                                 <p>{product?.prices[0]?.currency?.symbol}</p>
@@ -158,15 +186,14 @@ class ProductDetails extends Component {
                             <button
                                 type="submit"
                                 className='bg-primary text-center text-white uppercase font-semibold text-sm rounded-sm w-full py-4 
-                                            hover:bg-green-500 transition-all ease-in-out duration-200 lg:max-w-[320px]'
+                                hover:bg-green-500 transition-all ease-in-out duration-200 lg:max-w-[320px]'
                             >
                                 add to cart
                             </button>
                         </div>
                         <div className='text-balance font-roboto text-base' dangerouslySetInnerHTML={{ __html: product?.description }} />
-
                     </div>
-                </div>
+                </form>
             </div>
         );
     }

@@ -58,11 +58,11 @@ html {
     @apply text-primary border-b border-primary transition-all ease-in-out duration-200
 }
 
-.active-size {
-    @apply bg-secondary text-white
+.active-attributes-item {
+    @apply bg-secondary text-white font-semibold
 }
 
-.active-color {
+.active-attributes-item-color {
     @apply outline outline-1 outline-offset-1 outline-primary
 }
 
