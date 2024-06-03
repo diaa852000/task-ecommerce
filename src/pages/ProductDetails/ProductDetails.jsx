@@ -11,7 +11,7 @@ class ProductDetails extends Component {
         this.state = {
             currentImg: '',
             currentImgIndex: 0,
-            formData: {}
+            formData: {},
         }
 
         this.imgRef = createRef(null);
@@ -30,13 +30,14 @@ class ProductDetails extends Component {
         }));
     }
 
+
     handleOnSubmit(e) {
         const {formData} = this.state;
         
         e.preventDefault();
-        
-        console.log(formData);
 
+        // logic to add to cart
+        
     }
 
     handleChooseImg(e) {
@@ -74,21 +75,24 @@ class ProductDetails extends Component {
 
     componentDidUpdate(prevProps) {
         const { product } = this.props;
+        const {formData} = this.state;
+
         if (product && product !== prevProps.product && product.gallery && product.gallery.length > 0) {
             this.setState({ currentImg: product.gallery[0], currentImgIndex: 0 });
         }
+
+        console.log(formData)
     }
 
     render() {
         const { product } = this.props;
-        const { currentImgIndex } = this.state;
+        const { currentImgIndex, formData } = this.state;
 
         return (
-            <div className='main-container flex flex-col lg:flex-row gap-4 lg:gap-28 mt-10'>
-                {/* HERE'S THE IMAGES */}
+            <div className='main-container flex flex-col lg:flex-row gap-4 lg:gap-28 mt-10 sm:min-h-dvh xl:min-h-0'>
                 <div className='flex flex-col justify-center items-center lg:flex-row lg:items-start gap-10'>
                     <div className='h-[110px] w-full text-center lg:w-auto lg:flex lg:flex-col justify-center lg:justify-start lg:items-center gap-4 lg:h-full overflow-x-scroll 
-                                sm:overflow-x-auto whitespace-nowrap custom-scrollbar-PDP'>
+                                sm:overflow-x-hidden whitespace-nowrap custom-scrollbar-PDP'>
                         {product && product?.gallery?.map((image, i) => (
                             <div className='max-w-[79px] max-h-[80px] h-full w-full inline-block mx-2 mt-2' key={i}>
                                 <img
@@ -109,7 +113,7 @@ class ProductDetails extends Component {
                         >
                             <img src={leftArrow} alt="left-arrow" />
                         </button>
-                        <div className='w-full aspect-square'>
+                        <div className='w-full sm:w-2/3 mx-auto lg:w-auto aspect-square'>
                             <img
                                 src={product?.gallery[currentImgIndex]}
                                 alt={product?.id}
@@ -127,9 +131,6 @@ class ProductDetails extends Component {
                     </div>
                 </div>
 
-                {/* HERE'S THE CONTENT */}
-                {/* //TODO: CONVERT IT INTO FORM TO HANDLE THE ADD CART AND VALIDATION OF THE FORM */}
-
                 <form 
                     onSubmit={(e) => this.handleOnSubmit(e)}
                     className='flex flex-col lg:flex-row flex-1 justify-start mt-8 lg:mt-0'
@@ -141,31 +142,30 @@ class ProductDetails extends Component {
                                 <div key={i}>
                                     <p className='uppercase font-bold text-lg font-roboto'>{attribute.name}</p>
                                     <div className='flex items-center justify-start gap-1.5'>
-                                        {attribute?.items?.map((item, i) => (
+                                        {attribute?.items?.map((item, j) => (
                                             attribute?.id === "Color" ?
                                                 <input
-                                                    key={i}
+                                                    key={j}
                                                     type='radio'
                                                     id={item?.id}
-                                                    name={item?.id}
+                                                    name={attribute?.id}
                                                     value={item?.value}
-                                                    className={`cursor-pointer size-8 shadow-sm appearance-none border border-black/35`}
+                                                    className={`cursor-pointer size-8 shadow-sm appearance-none border border-black/35 ${formData[attribute?.id] === item?.value && 'active-attributes-item-color'}`}
                                                     style={{ background: item?.value }}
-                                                    onClick={() => console.log(item?.value)}
-                                                    onChange={e => this.onChange(e)}
+                                                    onChange={this.onChange}
                                                 />
                                                 : <label
                                                     htmlFor={item?.id}
-                                                    key={i}
-                                                    className='uppercase cursor-pointer border border-black w-[70px] h-[45px] flex items-center justify-center'
+                                                    key={j}
+                                                    className={`uppercase cursor-pointer border border-black w-[70px] h-[45px] flex items-center justify-center ${formData[attribute?.id] === item?.value && 'active-attributes-item'}`}
                                                 >
                                                     <input
                                                         type='radio'
                                                         id={item?.id}
-                                                        name={item?.id}
+                                                        name={attribute?.id}
                                                         value={item?.value}
                                                         className={`appearance-none hidden`}
-                                                        onChange={e => this.onChange(e)}
+                                                        onChange={this.onChange}
                                                     />
                                                     <span className='font-medium text-base'>{item?.value}</span>
                                                 </label>
