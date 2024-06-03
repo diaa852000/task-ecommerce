@@ -11,17 +11,20 @@ class ProductDetails extends Component {
         this.state = {
             currentImg: '',
             currentImgIndex: 0,
+            productAttributes: [],
             formData: {},
+            formMsg: "",
         }
 
         this.imgRef = createRef(null);
+        this.onChange = this.onChange.bind(this);
         this.handleChooseImg = this.handleChooseImg.bind(this);
         this.handleSwapImages = this.handleSwapImages.bind(this);
-        this.onChange = this.onChange.bind(this);
         this.handleOnSubmit = this.handleOnSubmit.bind(this);
+        this.checkFormValidation = this.checkFormValidation.bind(this);
     }
 
-    onChange(e) {        
+    onChange(e) {
         this.setState((prevState) => ({
             formData: {
                 ...prevState.formData,
@@ -30,15 +33,32 @@ class ProductDetails extends Component {
         }));
     }
 
+    checkFormValidation() {
+        const { productAttributes, formData } = this.state;
+
+        const attributesFormData = Object.keys(formData);
+
+        const isValid = productAttributes.every(attribute => attributesFormData.includes(attribute));
+
+        return isValid;
+    }
 
     handleOnSubmit(e) {
-        const {formData} = this.state;
-        
+        const { formData, formMsg } = this.state;
+        const validMsg = "Successfully added to cart!";
+        const inValidMsg = "Unsuccessfully added to cart! Please choose all attributes";
+
         e.preventDefault();
 
-        console.log(formData)
-        // logic to add to cart
-        
+        const isValid = this.checkFormValidation();
+        this.setState({formMsg: isValid? validMsg : inValidMsg});
+
+        if(!isValid) return;
+
+        // add to cart logic here.
+
+
+        return formMsg;
     }
 
     handleChooseImg(e) {
@@ -69,31 +89,36 @@ class ProductDetails extends Component {
 
     componentDidMount() {
         const { product } = this.props;
-        if (product && product.gallery && product.gallery.length > 0) {
-            this.setState({ currentImg: product.gallery[0], currentImgIndex: 0 });
+        const { productAttributes } = this.state;
+
+        if (product && product?.gallery && product?.gallery.length > 0) {
+            this.setState({ currentImg: product?.gallery[0], currentImgIndex: 0 });
         }
     }
 
     componentDidUpdate(prevProps) {
         const { product } = this.props;
-        const {formData} = this.state;
+        const { formData, productAttributes } = this.state;
 
         if (product && product !== prevProps.product && product.gallery && product.gallery.length > 0) {
             this.setState({ currentImg: product.gallery[0], currentImgIndex: 0 });
         }
 
-        // console.log(formData)
+        const newAttributes = product?.attributes?.map(attribute => attribute.id) || [];
+        if (JSON.stringify(productAttributes) !== JSON.stringify(newAttributes)) {
+            this.setState({ productAttributes: newAttributes });
+        }
     }
 
     render() {
         const { product } = this.props;
-        const { currentImgIndex, formData } = this.state;
+        const { currentImgIndex, formData, formMsg } = this.state;
 
         return (
             <div className='main-container flex flex-col lg:flex-row gap-4 lg:gap-28 mt-10 sm:min-h-dvh xl:min-h-0'>
                 <div className='flex flex-col justify-center items-center lg:flex-row lg:items-start gap-10'>
-                    <div className='h-[110px] w-full text-center lg:w-auto lg:flex lg:flex-col justify-center lg:justify-start lg:items-center gap-4 lg:h-full overflow-x-scroll 
-                                sm:overflow-x-hidden whitespace-nowrap custom-scrollbar-PDP'>
+                    <div className='h-[110px] w-full text-center lg:w-auto lg:flex lg:flex-col justify-center lg:justify-start lg:items-center gap-4 
+                        lg:h-full overflow-x-scroll sm:overflow-x-hidden whitespace-nowrap custom-scrollbar-PDP'>
                         {product && product?.gallery?.map((image, i) => (
                             <div className='max-w-[79px] max-h-[80px] h-full w-full inline-block mx-2 mt-2' key={i}>
                                 <img
@@ -132,7 +157,7 @@ class ProductDetails extends Component {
                     </div>
                 </div>
 
-                <form 
+                <form
                     onSubmit={(e) => this.handleOnSubmit(e)}
                     className='flex flex-col lg:flex-row flex-1 justify-start mt-8 lg:mt-0'
                 >
@@ -194,6 +219,7 @@ class ProductDetails extends Component {
                             >
                                 add to cart
                             </button>
+                            {formMsg.trim().length > 0 && <p className='text-sm capitalize mt-2'>{formMsg}</p>}
                         </div>
                         <div className='text-balance font-roboto text-base' dangerouslySetInnerHTML={{ __html: product?.description }} />
                     </div>
