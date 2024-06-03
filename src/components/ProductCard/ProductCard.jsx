@@ -39,6 +39,7 @@ class ProductCard extends Component {
 
     render() {
         const { product } = this.props;
+        const {isHovered} = this.state;
 
         return (
             <div
@@ -46,15 +47,19 @@ class ProductCard extends Component {
                 onMouseEnter={this.handleHovere}
                 onMouseLeave={this.handleHovere}
                 onClick={this.handleClick}
-                className={`relative flex flex-col justify-self-center sm:justify-self-auto p-3 cursor-pointer transition-all ease-in-out duration-200 ${this.state.isHovered && 'card-shadow'} h-[500px]`}
+                className={`relative flex flex-col justify-self-center sm:justify-self-auto p-3 cursor-pointer transition-all ease-in-out duration-200 
+                ${this.state.isHovered && 'card-shadow'} h-[500px]`}
             >
                 <div className="flex-1 overflow-hidden">
                     <div className='h-full w-full relative'>
                         <img
                             src={product?.gallery[0]}
                             alt={product?.id}
-                            className="w-full h-full object-fill object-top"
+                            className={`w-full h-full object-fill object-top`}
                         />
+                        {!product?.inStock &&
+                            <span className='outOfStock-overlay'>out of stock</span>
+                        }
                     </div>
                 </div>
 
@@ -62,9 +67,11 @@ class ProductCard extends Component {
                 <div className="mt-4 md:mt-8 pb-1 shrink-0 relative">
                     <button
                         type='button'
-                        className={`absolute -top-11 right-6 trasnition ease-in-out duration-150 cursor-pointer z-20 drop-shadow-xl
-                        ${this.state.isHovered ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
                         onClick={(e) => this.handlAddSingleItem(e)}
+                        className={`absolute -top-11 right-6 trasnition ease-in-out duration-150 cursor-pointer z-20 drop-shadow-xl
+                        ${isHovered ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'} 
+                        ${!product?.inStock && 'hidden'}
+                        `}
                     >
                         <img src={addIcon} alt="add-icon" />
                     </button>

@@ -76,6 +76,10 @@ html {
     @apply text-3xl font-light mb-16 px-1
 }
 
+.outOfStock-overlay {
+    @apply opacity-50 absolute top-0 left-0 w-full h-full bg-gray-100 text-2xl font-light uppercase flex items-center justify-center
+}
+
 .custom-scrollbar-PDP {
     -ms-overflow-style: none;  
     scrollbar-width: thin;  

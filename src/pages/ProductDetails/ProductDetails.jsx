@@ -36,6 +36,7 @@ class ProductDetails extends Component {
         
         e.preventDefault();
 
+        console.log(formData)
         // logic to add to cart
         
     }
@@ -81,7 +82,7 @@ class ProductDetails extends Component {
             this.setState({ currentImg: product.gallery[0], currentImgIndex: 0 });
         }
 
-        console.log(formData)
+        // console.log(formData)
     }
 
     render() {
@@ -187,6 +188,7 @@ class ProductDetails extends Component {
                                 type="submit"
                                 className='bg-primary text-center text-white uppercase font-semibold text-sm rounded-sm w-full py-4 
                                 hover:bg-green-500 transition-all ease-in-out duration-200 lg:max-w-[320px]'
+                                disabled={!product?.inStock}
                             >
                                 add to cart
                             </button>
