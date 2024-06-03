@@ -151,18 +151,20 @@ class ProductDetails extends Component {
                                                     id={item?.id}
                                                     name={attribute?.id}
                                                     value={item?.value}
-                                                    className={`cursor-pointer size-8 shadow-sm appearance-none border border-black/35 ${formData[attribute?.id] === item?.value && 'active-attributes-item-color'}`}
-                                                    style={{ background: item?.value }}
                                                     onChange={this.onChange}
+                                                    style={{ background: item?.value }}
+                                                    className={`cursor-pointer size-8 shadow-sm appearance-none border border-black/35 
+                                                    ${formData[attribute?.id] === item?.value && 'active-attributes-item-color'}`}
                                                 />
                                                 : <label
-                                                    htmlFor={item?.id}
+                                                    htmlFor={`${attribute?.id}-${item?.id}`}
                                                     key={j}
-                                                    className={`uppercase cursor-pointer border border-black w-[70px] h-[45px] flex items-center justify-center ${formData[attribute?.id] === item?.value && 'active-attributes-item'}`}
+                                                    className={`uppercase cursor-pointer border border-black w-[70px] h-[45px] flex items-center justify-center 
+                                                    ${formData[attribute?.id] === item?.value && 'active-attributes-item'}`}
                                                 >
                                                     <input
                                                         type='radio'
-                                                        id={item?.id}
+                                                        id={`${attribute?.id}-${item?.id}`}
                                                         name={attribute?.id}
                                                         value={item?.value}
                                                         className={`appearance-none hidden`}
