@@ -44,16 +44,16 @@ export default class Header extends Component {
     render() {
         return (
             <div>
-                <nav className='main-container grid grid-cols-7 h-[80px] text-base font-medium z-30 bg-white px-4'>
+                <nav className='main-container grid grid-cols-7 h-[80px] text-base font-medium z-30 bg-white px-4 pt-2'>
                     <ul className='flex flex-row items-center gap-4 col-span-3'>
                         {navlinks.map(navlink => (
                             <li
                                 key={navlink.id}
-                                className={`uppercase ${this.state.hoveredLinkId === navlink.id && 'active-link'} ${this.state.activeLink === navlink.route && 'active-link'}`}
+                                className={`uppercase h-full ${this.state.hoveredLinkId === navlink.id && 'active-link'} ${this.state.activeLink === navlink.route && 'active-link'}`}
                                 onMouseEnter={() => this.hoverNavLink(navlink.id)}
                                 onMouseLeave={() => this.hoverNavLink(null)}
                             >
-                                <Link to={navlink.route}>{navlink.label}</Link>
+                                <Link className='h-full inline-block' to={navlink.route}>{navlink.label}</Link>
                             </li>
                         ))}
                     </ul>

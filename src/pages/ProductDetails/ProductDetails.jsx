@@ -3,6 +3,7 @@ import withRouter from '../../HOC/WithRouter';
 import leftArrow from '../../assets/left-arrow.svg'
 import rightArrow from '../../assets/right-arrow.svg'
 import withProductData from '../../HOC/WithProductData';
+import { getSingleProductQuery } from '../../lib/query';
 
 class ProductDetails extends Component {
     constructor(props) {

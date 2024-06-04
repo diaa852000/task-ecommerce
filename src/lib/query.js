@@ -71,3 +71,46 @@ query GetSingleProduct($id: String!) {
         }
     }
 `;
+
+
+export const mainQuery = gql`
+    {
+        categories {
+            id
+            name
+            __typename
+        }
+
+        products {
+            id
+            name
+            brand
+            inStock
+            description
+            category
+            prices {
+                amount
+                currency {
+                label
+                symbol
+                __typename
+                }
+                __typename
+            }
+            gallery
+            attributes { 
+                id
+                name
+                type
+                items {
+                displayValue
+                value
+                id
+                __typename
+                }
+                __typename
+            }
+            __typename
+            }
+    }
+`

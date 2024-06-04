@@ -1,14 +1,14 @@
 import Categories from "./Categories/Categories";
-import KidsCategories from "./Categories/KidsCategories";
-import MenCategories from "./Categories/MenCategories";
-import WomenCategories from "./Categories/WomenCategories";
+import ClothesCategory from "./Categories/ClothesCategory";
+import TechCategory from "./Categories/TechCategory";
+import AllCategories from "./Categories/AllCategories";
 
 import ProductDetails from "./ProductDetails/ProductDetails";
 
 export {
-    Categories,
     ProductDetails,
-    WomenCategories,
-    MenCategories,
-    KidsCategories
+    Categories,
+    AllCategories,
+    TechCategory,
+    ClothesCategory
 }

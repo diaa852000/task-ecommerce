@@ -5,7 +5,7 @@ import { getSingleProductQuery } from '../lib/query';
 const withProductData = (WrappedComponent) => {
     return class extends React.Component {
         render() {
-            const { id } = this.props.router.params;
+            const { id } = this.props?.router?.params;
 
             return (
                 <Query query={getSingleProductQuery} variables={{ id }}>

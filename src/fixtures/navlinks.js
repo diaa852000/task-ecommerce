@@ -1,7 +1,7 @@
 const navlinks = [
-    {id: 1, route: '/', label: 'women'},
-    {id: 2, route: '/men', label: 'men'},
-    {id: 3, route: '/kids', label: 'kids'},
+    {id: 1, route: '/', label: 'all'},
+    {id: 2, route: '/tech', label: 'tech'},
+    {id: 3, route: '/clothes', label: 'clothes'},
 ];
 
 export default navlinks;

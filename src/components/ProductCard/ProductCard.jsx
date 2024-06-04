@@ -35,8 +35,6 @@ class ProductCard extends Component {
         console.log('add to cart')
     }
 
-
-
     render() {
         const { product } = this.props;
         const {isHovered} = this.state;
@@ -55,7 +53,7 @@ class ProductCard extends Component {
                         <img
                             src={product?.gallery[0]}
                             alt={product?.id}
-                            className={`w-full h-full object-fill object-top`}
+                            className={`w-full h-full object-cover object-top`}
                         />
                         {!product?.inStock &&
                             <span className='outOfStock-overlay'>out of stock</span>

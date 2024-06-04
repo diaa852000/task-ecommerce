@@ -73,7 +73,7 @@ html {
 }
 
 .category-title {
-    @apply text-3xl font-light mb-16 px-1
+    @apply text-3xl font-light mb-16 px-1 capitalize
 }
 
 .outOfStock-overlay {
