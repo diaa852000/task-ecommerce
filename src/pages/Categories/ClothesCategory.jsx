@@ -11,10 +11,10 @@ class ClothesCategory extends Component {
     }
 
     render() {
-        const {products} = this.props;
+        const {products, category} = this.props;
         return (
             <>
-                <div className='category-title '>clothes</div>
+                <div className='category-title'>{category?.name}</div>
                 <div className="grid-container justify-between">
                     {products?.map(product => (
                         <ProductCard product={product} key={product.id} />
