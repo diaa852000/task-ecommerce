@@ -43,49 +43,55 @@ export default class Header extends Component {
     }
 
     render() {
+        const { isOpenCart } = this.state;
         return (
             <CartConsumer>
                 {props => {
                     const { totalNumber } = props;
                     return (
-                        <div>
-                            <nav className='main-container grid grid-cols-7 h-[80px] text-base font-medium z-30 bg-white px-4 pt-2'>
-                                <ul className='flex flex-row items-center gap-4 col-span-3'>
-                                    {navlinks.map(navlink => (
-                                        <li
-                                            key={navlink.id}
-                                            className={`uppercase h-full ${this.state.hoveredLinkId === navlink.id && 'active-link'} ${this.state.activeLink === navlink.route && 'active-link'}`}
-                                            onMouseEnter={() => this.hoverNavLink(navlink.id)}
-                                            onMouseLeave={() => this.hoverNavLink(null)}
-                                        >
-                                            <Link className='h-full inline-block' to={navlink.route}>{navlink.label}</Link>
-                                        </li>
-                                    ))}
-                                </ul>
+                        <>
+                            <div className='sticky top-0 lef-0 w-full h-full border z-30'>
+                                <nav className='main-container grid grid-cols-7 h-[80px] text-base font-medium z-30 bg-white px-4 pt-2'>
+                                    <ul className='flex flex-row items-center gap-4 col-span-3'>
+                                        {navlinks.map(navlink => (
+                                            <li
+                                                key={navlink.id}
+                                                className={`uppercase h-full ${this.state.hoveredLinkId === navlink.id && 'active-link'} ${this.state.activeLink === navlink.route && 'active-link'}`}
+                                                onMouseEnter={() => this.hoverNavLink(navlink.id)}
+                                                onMouseLeave={() => this.hoverNavLink(null)}
+                                            >
+                                                <Link className='h-full inline-block' to={navlink.route}>{navlink.label}</Link>
+                                            </li>
+                                        ))}
+                                    </ul>
 
-                                <Link to={'/'} className='col-span-1 flex items-center justify-center'>
-                                    <img
-                                        src={logo}
-                                        alt="logo"
-                                    />
-                                </Link>
+                                    <Link to={'/'} className='col-span-1 flex items-center justify-center'>
+                                        <img
+                                            src={logo}
+                                            alt="logo"
+                                        />
+                                    </Link>
 
-                                <div className='col-span-3 flex items-center justify-self-end w-fit relative px-2'>
-                                    <button type='button' onClick={this.toggleCart}>
-                                        <span
-                                            className='absolute top-4 md:top-3.5 -right-0 bg-[#1d1f22] text-white text-[10px] size-4 outline-none
-                                    rounded-full flex justify-center items-center font-bold'
-                                        >
-                                            {totalNumber}
-                                        </span>
-                                        <img src={cartIcon} alt="cartIcon" />
-                                    </button>
-                                </div>
-                            </nav>
-                            {this.state.isOpenCart && <div className="overlay" onClick={this.toggleCart}></div>}
+                                    <div className='col-span-3 flex items-center justify-self-end w-fit relative px-2'>
+                                        <button type='button' onClick={this.toggleCart}>
+                                            <span
+                                                className='absolute top-4 md:top-3.5 -right-0 bg-[#1d1f22] text-white text-[10px] size-4 outline-none
+                                            rounded-full flex justify-center items-center font-bold'
+                                            >
+                                                {totalNumber}
+                                            </span>
+                                            <img src={cartIcon} alt="cartIcon" />
+                                        </button>
+                                    </div>
+                                </nav>
+                                {/* //TODO: HANDLE THE CART OVERLAY AND ITS POSITION */}
 
-                            {this.state.isOpenCart && <Cart />}
-                        </div>
+                            </div>
+                            {isOpenCart && <div className="overlay" onClick={this.toggleCart}>
+                                {/* {isOpenCart && <Cart />} */}
+                                <Cart/>
+                            </div>}
+                        </>
                     )
                 }}
             </CartConsumer>

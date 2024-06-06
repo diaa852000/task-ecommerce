@@ -113,4 +113,10 @@ export const mainQuery = gql`
             __typename
             }
     }
-`
+`;
+
+export const placeOrderMutation = gql`
+    mutation placeOrder($totalAmount: Float!) {
+        placeOrder(totalAmount: $totalAmount) 
+    }
+`;
