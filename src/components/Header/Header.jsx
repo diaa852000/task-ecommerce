@@ -50,17 +50,24 @@ export default class Header extends Component {
                     const { totalNumber } = props;
                     return (
                         <>
-                            <div className='sticky top-0 lef-0 w-full h-full border z-30'>
-                                <nav className='main-container grid grid-cols-7 h-[80px] text-base font-medium z-30 bg-white px-4 pt-2'>
+                            <div className='sticky top-0 lef-0 w-full h-full z-30 bg-white'>
+                                <nav className='grid grid-cols-7 text-base font-medium z-30 bg-white px-4 pt-2 h-[60px] main-container'>
                                     <ul className='flex flex-row items-center gap-4 col-span-3'>
                                         {navlinks.map(navlink => (
                                             <li
                                                 key={navlink.id}
-                                                className={`uppercase h-full ${this.state.hoveredLinkId === navlink.id && 'active-link'} ${this.state.activeLink === navlink.route && 'active-link'}`}
+                                                className={`uppercase h-full ${this.state.hoveredLinkId === navlink.id && 'active-link'} 
+                                                ${this.state.activeLink === navlink.route && 'active-link'}`}
                                                 onMouseEnter={() => this.hoverNavLink(navlink.id)}
                                                 onMouseLeave={() => this.hoverNavLink(null)}
                                             >
-                                                <Link className='h-full inline-block' to={navlink.route}>{navlink.label}</Link>
+                                                <Link 
+                                                    className='h-full inline-block' 
+                                                    to={navlink.route}
+                                                    data-testid={this.state.activeLink === navlink.route ? 'active-category-link' : 'category-link'}
+                                                    >
+                                                        {navlink.label}
+                                                    </Link>
                                             </li>
                                         ))}
                                     </ul>
@@ -73,7 +80,11 @@ export default class Header extends Component {
                                     </Link>
 
                                     <div className='col-span-3 flex items-center justify-self-end w-fit relative px-2'>
-                                        <button type='button' onClick={this.toggleCart}>
+                                        <button 
+                                            type='button' 
+                                            onClick={this.toggleCart}
+                                            data-testid='cart-btn'
+                                        >
                                             <span
                                                 className='absolute top-4 md:top-3.5 -right-0 bg-[#1d1f22] text-white text-[10px] size-4 outline-none
                                             rounded-full flex justify-center items-center font-bold'
@@ -88,7 +99,6 @@ export default class Header extends Component {
 
                             </div>
                             {isOpenCart && <div className="overlay" onClick={this.toggleCart}>
-                                {/* {isOpenCart && <Cart />} */}
                                 <Cart/>
                             </div>}
                         </>

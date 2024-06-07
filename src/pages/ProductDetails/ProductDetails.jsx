@@ -3,8 +3,9 @@ import withRouter from '../../HOC/WithRouter';
 import leftArrow from '../../assets/left-arrow.svg'
 import rightArrow from '../../assets/right-arrow.svg'
 import withProductData from '../../HOC/WithProductData';
-import { getSingleProductQuery } from '../../lib/query';
 import { CartConsumer } from '../../contexts/CartContext';
+import parse from 'html-react-parser'
+import { toKebabCase } from '../../helpers';
 
 class ProductDetails extends Component {
     constructor(props) {
@@ -122,13 +123,20 @@ class ProductDetails extends Component {
                     return (
                         <div className='main-container flex flex-col lg:flex-row gap-4 lg:gap-28 mt-10 sm:min-h-dvh xl:min-h-0'>
                             <div className='flex flex-col justify-center items-center lg:flex-row lg:items-start gap-10'>
-                                <div className='h-[110px] w-full text-center lg:w-auto lg:flex lg:flex-col justify-center lg:justify-start lg:items-center gap-4 
-                        lg:h-full overflow-x-scroll sm:overflow-x-hidden whitespace-nowrap custom-scrollbar-PDP'>
+                                <div 
+                                    data-testid='product-gallery'
+                                    className='h-[110px] lg:max-h-[600px] lg:h-full w-full text-center lg:w-auto 
+                                    lg:flex lg:flex-col justify-center lg:justify-start lg:items-center gap-4
+                                    overflow-x-scroll sm:overflow-x-hidden whitespace-nowrap custom-scrollbar-PDP px-2'
+                                >
                                     {product && product?.gallery?.map((image, i) => (
-                                        <div className='max-w-[79px] max-h-[80px] h-full w-full inline-block mx-2 mt-2' key={i}>
+                                        <div 
+                                            className='max-w-[79px] max-h-[80px] h-full w-full inline-block mx-2 mt-2' 
+                                            key={i}
+                                        >
                                             <img
                                                 src={image}
-                                                alt="demo1"
+                                                alt="img"
                                                 className='cursor-pointer object-cover object-top w-full h-full'
                                                 onClick={(e) => this.handleChooseImg(e)}
                                             />
@@ -144,7 +152,7 @@ class ProductDetails extends Component {
                                     >
                                         <img src={leftArrow} alt="left-arrow" />
                                     </button>
-                                    <div className='w-full sm:w-2/3 mx-auto lg:w-auto aspect-square'>
+                                    <div className='w-full sm:w-2/3 mx-auto lg:w-auto max-h-[600px]'>
                                         <img
                                             src={product?.gallery[currentImgIndex]}
                                             alt={product?.id}
@@ -170,7 +178,10 @@ class ProductDetails extends Component {
                                     <h1 className='text-3xl font-semibold capitalize'>{product?.name}</h1>
                                     <div className='flex flex-col gap-4'>
                                         {product && product?.attributes?.map((attribute, i) => (
-                                            <div key={i}>
+                                            <div 
+                                                key={i}
+                                                data-testid={`product-attribute-${toKebabCase(attribute?.name)}`} 
+                                            >
                                                 <p className='uppercase font-bold text-lg font-roboto'>{attribute.name}</p>
                                                 <div className='flex items-center justify-start gap-1.5'>
                                                     {attribute?.items?.map((item, j) => (
@@ -184,13 +195,13 @@ class ProductDetails extends Component {
                                                                 onChange={this.onChange}
                                                                 style={{ background: item?.value }}
                                                                 className={`cursor-pointer size-8 shadow-sm appearance-none border border-black/35 
-                                                ${formData[attribute?.id] === item?.value && 'active-attributes-item-color'}`}
+                                                                ${formData[attribute?.id] === item?.value && 'active-attributes-item-color'}`}
                                                             />
                                                             : <label
                                                                 htmlFor={`${attribute?.id}-${item?.id}`}
                                                                 key={j}
                                                                 className={`uppercase cursor-pointer border border-black w-[70px] h-[45px] flex items-center justify-center 
-                                                ${formData[attribute?.id] === item?.value && 'active-attributes-item'}`}
+                                                                ${formData[attribute?.id] === item?.value && 'active-attributes-item'}`}
                                                             >
                                                                 <input
                                                                     type='radio'
@@ -217,16 +228,22 @@ class ProductDetails extends Component {
                                     </div>
                                     <div>
                                         <button
+                                            data-testid='add-to-cart'
                                             type="submit"
-                                            className='bg-primary text-center text-white uppercase font-semibold text-sm rounded-sm w-full py-4 
-                                hover:bg-green-500 transition-all ease-in-out duration-200 lg:max-w-[320px]'
                                             disabled={!product?.inStock}
+                                            className='bg-primary text-center text-white uppercase font-semibold text-sm rounded-sm w-full py-4 
+                                            hover:bg-green-500 transition-all ease-in-out duration-200 lg:max-w-[320px]'
                                         >
                                             add to cart
                                         </button>
                                         {formMsg.trim().length > 0 && <p className='text-sm capitalize mt-2'>{formMsg}</p>}
                                     </div>
-                                    <div className='text-balance font-roboto text-base' dangerouslySetInnerHTML={{ __html: product?.description }} />
+                                    <div 
+                                        data-testid='product-description'
+                                        className='text-balance font-roboto text-base'
+                                    >
+                                        {parse(product?.description || '')}
+                                    </div>
                                 </div>
                             </form>
                         </div>

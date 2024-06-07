@@ -37,36 +37,36 @@ export const getProductsQuery = gql`
 `;
 
 export const getSingleProductQuery = gql`
-query GetSingleProduct($id: String!) {
-    product(id: $id) {
-        id
-        name
-        brand
-        inStock
-        description
-        category
-        prices {
-            amount
-            currency {
-            label
-            symbol
-            __typename
-            }
-        __typename
-        }
-        gallery 
-        attributes { 
+    query GetSingleProduct($id: String!) {
+        product(id: $id) {
             id
             name
-            type
-            items {
-            displayValue
-            value
-            id
+            brand
+            inStock
+            description
+            category
+            prices {
+                amount
+                currency {
+                label
+                symbol
+                __typename
+                }
             __typename
-        }
-        __typename
-        }
+            }
+            gallery 
+            attributes { 
+                id
+                name
+                type
+                items {
+                displayValue
+                value
+                id
+                __typename
+            }
+            __typename
+            }
         __typename
         }
     }

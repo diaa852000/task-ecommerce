@@ -1,40 +1,38 @@
 import { Component } from 'react'
 import { GoPlus } from "react-icons/go";
 import { BsDash } from "react-icons/bs";
-import { toKebabCase } from '../../helpers';
 
+// Function to convert a string to kebab case
+const toKebabCase = (str) => {
+    return str
+        .split(' ')
+        .map(word => word.toLowerCase())
+        .join('-');
+};
 
 export default class CartItem extends Component {
-    constructor(props){
-        super(props);
-    }
-
-
     render() {
-        const { product, decreaseQuantity, increaseQuantity } = this.props;
+        const { product } = this.props;
         return (
             <div className='mt-4 flex flex-1 gap-1'>
                 <div className='flex flex-col flex-1'>
                     <h3 className='font-light'>{product?.name}</h3>
                     <h3 className='font-medium text-sm mt-2'>{product?.prices[0]?.amount * product?.quantity}</h3>
-                    <div className=''>
+                    <div className='flex-1'>
                         {product && product?.attributes?.map((attribute, i) => (
-                            <div 
-                                key={i}
-                                data-testid={`cart-item-attribute-${toKebabCase(attribute.name)}`}
-                            >
+                            <div key={i} data-testid={`cart-item-attribute-${toKebabCase(attribute.name)}`}>
                                 <h2 className='capitalize text-xs mt-2 mb-1.5 text-gray-500'>{attribute?.name}:</h2>
                                 <div
                                     key={i}
                                     className='flex items-center justify-start gap-1.5 flex-1'
                                 >
                                     {attribute?.items?.map((item, j) => {
-                                        const isActive = product?.selectedAttributes[attribute.id] === item.value;
+                                        const isActive = product.selectedAttributes[attribute.id] === item.value;
                                         const kebabCaseAttributeName = toKebabCase(attribute.name);
                                         const kebabCaseItemValue = toKebabCase(item.value);
 
                                         return (
-                                            attribute?.id === "Color" 
+                                            attribute?.id === "Color"
                                             ?
                                                 <div
                                                     key={j}
@@ -43,17 +41,17 @@ export default class CartItem extends Component {
                                                     name={attribute?.id}
                                                     value={item?.value}
                                                     onChange={this.onChange}
-                                                    data-testid={`cart-item-attribute-${kebabCaseAttributeName}-${kebabCaseItemValue}${isActive ? '-selected' : ''}`}
                                                     style={{ background: item?.value }}
                                                     className={`cursor-pointer size-5 shadow-sm appearance-none border border-black/35 
                                                     ${isActive && 'active-attributes-item-color'}`}
+                                                    data-testid={`cart-item-attribute-${kebabCaseAttributeName}-${kebabCaseItemValue}${isActive ? '-selected' : ''}`}
                                                 />
                                             :   <label
                                                     htmlFor={`${attribute?.id}-${item?.id}`}
                                                     key={j}
-                                                    data-testid={`cart-item-attribute-${kebabCaseAttributeName}-${kebabCaseItemValue}${isActive ? '-selected' : ''}`}
                                                     className={`uppercase cursor-pointer border border-black w-[40px] h-[35px] flex items-center justify-center
-                                                    ${isActive && 'active-attributes-item'}`}
+                                                ${isActive && 'active-attributes-item'}`}
+                                                    data-testid={`cart-item-attribute-${kebabCaseAttributeName}-${kebabCaseItemValue}${isActive ? '-selected' : ''}`}
                                                 >
                                                     <input
                                                         type='radio'
@@ -78,29 +76,24 @@ export default class CartItem extends Component {
                         <button
                             type="button"
                             className='border p-1 border-black'
-                            onClick={() => increaseQuantity(product.uniqueId)}
                             data-testid='cart-item-amount-increase'
                         >
                             <GoPlus size={14} />
                         </button>
 
-                        <div 
-                            className='flex items-center justify-center fon-bold'
-                            data-testid='cart-item-amount'
-                        >
+                        <div className='flex items-center justify-center fon-bold' data-testid='cart-item-amount'>
                             {product?.quantity}
                         </div>
 
                         <button
                             type="button"
                             className='border p-1 border-black'
-                            onClick={() => decreaseQuantity(product.uniqueId)}
                             data-testid='cart-item-amount-decrease'
                         >
                             <BsDash size={14} />
                         </button>
                     </div>
-                    <div className='w-1/2 h-[200px]'>
+                    <div>
                         <img
                             src={product?.gallery[0]}
                             alt="img"

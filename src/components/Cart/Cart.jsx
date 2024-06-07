@@ -10,48 +10,50 @@ export default class Cart extends Component {
     }
 
     async handlePlaceOrder(callback) {
-        // e.preventDefault();
-
         await callback();
     }
 
     render() {
-        // const { handlePlaceOrder } = this
         return (
             <CartConsumer>
                 {props => {
-                    const { totalNumber, cart, totalAmount, placeOrder } = props;
+                    const { totalNumber, cart, totalAmount, placeOrder, decreaseQuantity, increaseQuantity } = props;
                     return (
-                        <div className='fixed top-[80px] left-0 w-full h-full overflow-y-scroll z-30'>
-                            <form
-                                // onSubmit={(e) => handlePlaceOrder(e, placeOrder)}
-                                className='w-full sm:w-[325px] z-30 bg-white absolute top-0 sm:right-[2.5%] min-[1440px]:right-[2.3%] min-[1500px]:right-[12%]
-                                shadow-sm p-4 flex flex-col gap-4'
-                            >
-                                <div className='text-sm flex items-center gap-1 mt-2'>
+                        <div
+                            onClick={e => e.stopPropagation()}
+                            className={`absolute top-[60px] right-0 md:right-8 w-full md:w-[400px] z-30 border bg-white p-2 
+                                ${cart?.length > 3 && 'max-h-[800px] h-full'} flex flex-col`}>
+                            <div className='flex flex-col overflow-y-auto'>
+                                <div className='text-sm flex items-start gap-1 mt-2'>
                                     <p className='font-semibold capitalize'>my bag,</p>
                                     {totalNumber > 1 ? <p>{totalNumber} items</p> : <p>{totalNumber} item</p>}
                                 </div>
 
                                 {cart && cart?.length > 0 && cart.map((product, i) => (
-                                    <CartItem product={product} key={i} cart={cart} />
+                                    <CartItem 
+                                        product={product} 
+                                        key={i} 
+                                        cart={cart} 
+                                        decreaseQuantity={decreaseQuantity}
+                                        increaseQuantity={increaseQuantity}
+                                    />
                                 ))}
-
-                                <div className='flex flex-col flex-1 gap-6 mt-2'>
-                                    <div className='flex items-center justify-between'>
-                                        <p className='capitalize text-sm font-semibold'>total</p>
-                                        <p className='text-sm font-semibold'>{totalAmount}</p>
-                                    </div>
-                                    <button
-                                        type="submit"
-                                        onClick={() => this.handlePlaceOrder(placeOrder)}
-                                        className='bg-primary text-center text-white uppercase font-semibold text-xs rounded-sm w-full py-3 hover:bg-green-500 
-                                        transition-all ease-in-out duration-200'
-                                    >
-                                        place order
-                                    </button>
+                            </div>
+                            <div className='flex flex-col flex-1 gap-6 mt-2'>
+                                <div className='flex items-center justify-between'>
+                                    <p className='capitalize text-sm font-semibold'>total</p>
+                                    <p className='text-sm font-semibold'>{totalAmount}</p>
                                 </div>
-                            </form>
+                                <button
+                                    type="submit"
+                                    onClick={() => this.handlePlaceOrder(placeOrder)}
+                                    disabled={cart?.length > 0 ? false : true}
+                                    className={`text-center text-white uppercase font-semibold text-xs rounded-sm w-full py-3 
+                                        transition-all ease-in-out duration-200 ${cart?.length > 0 ? 'bg-primary hover:bg-green-500' : 'bg-gray-300'}`}
+                                >
+                                    place order
+                                </button>
+                            </div>
                         </div>
                     )
                 }}

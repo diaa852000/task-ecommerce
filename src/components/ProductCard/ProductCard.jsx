@@ -2,7 +2,7 @@
     import addIcon from '../../assets/Common.svg'
     import withRouter from '../../HOC/WithRouter';
     import { CartConsumer } from '../../contexts/CartContext';
-
+    import { toKebabCase } from '../../helpers';
     class ProductCard extends Component {
         constructor() {
             super();
@@ -15,7 +15,6 @@
             this.handleClick = this.handleClick.bind(this);
             this.handlAddSingleItem = this.handlAddSingleItem.bind(this);
         }
-
 
         handleHovere() {
             this.setState(prevState => {
@@ -39,6 +38,8 @@
         render() {
             const { product } = this.props;
             const { isHovered } = this.state;
+            const kebabCaseProductName = toKebabCase(product?.name);
+            const defaultAttributes = product?.attributes?.map(attribute => attribute?.items[0]?.value);
             return (
                 <CartConsumer>
                     {props => {
@@ -50,7 +51,8 @@
                                 onMouseLeave={this.handleHovere}
                                 onClick={this.handleClick}
                                 className={`relative flex flex-col justify-self-center sm:justify-self-auto p-3 cursor-pointer transition-all ease-in-out duration-200 
-                            ${this.state.isHovered && 'card-shadow'} h-[500px]`}
+                                ${this.state.isHovered && 'card-shadow'} h-[500px]`}
+                                data-testid={`product-${kebabCaseProductName}`}
                             >
                                 <div className="flex-1 overflow-hidden">
                                     <div className='h-full w-full relative'>
@@ -69,7 +71,7 @@
                                 <div className="mt-4 md:mt-8 pb-1 shrink-0 relative">
                                     <button
                                         type='button'
-                                        onClick={(e) => this.handlAddSingleItem(e, ()=> addToCart(product))}
+                                        onClick={(e) => this.handlAddSingleItem(e, ()=> addToCart(product, defaultAttributes))}
                                         className={`absolute -top-11 right-6 trasnition ease-in-out duration-150 cursor-pointer z-20 drop-shadow-xl
                                     ${isHovered ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'} 
                                     ${!product?.inStock && 'hidden'}

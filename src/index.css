@@ -69,7 +69,7 @@ html {
 /* end active classes */
 
 .overlay {
-    @apply fixed top-[80px] left-0 w-full h-full bg-black/50 z-10
+    @apply fixed top-0 left-0 w-full h-full bg-black/50 z-10 overflow-hidden
 }
 
 .category-title {

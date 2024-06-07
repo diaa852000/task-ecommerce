@@ -16,11 +16,10 @@ class AllCategories extends Component {
                     return (
                         <CartConsumer>
                             {props => {
-                                const { totalNumber, addToCart } = props;
+                                const {addToCart } = props;
                                 return (
                                     <>
                                         <div className='category-title'>all</div>
-                                        <div className='category-title'>{totalNumber}</div>
                                         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
                                             {data?.products?.map(product => (
                                                 <ProductCard product={product} key={product.id} />
