@@ -1,87 +1,113 @@
-import { Component } from 'react'
-import navlinks from '../../fixtures/navlinks'
-import { Link } from 'react-router-dom'
-import logo from '../../assets/a-logo.png'
-import cartIcon from '../../assets/cart.svg'
-import { Cart } from '../'
-import { CartConsumer } from '../../contexts/CartContext'
-export default class Header extends Component {
-    constructor() {
-        super();
+import { Component } from 'react';
+import navlinks from '../../fixtures/navlinks';
+import { Link } from 'react-router-dom';
+import logo from '../../assets/a-logo.png';
+import cartIcon from '../../assets/cart.svg';
+import { Cart } from '../';
+import { CartConsumer } from '../../contexts/CartContext';
+import withRouter from '../../HOC/WithRouter';
 
+class Header extends Component {
+    constructor(props) {
+        super(props);
+
+        const currentPath = props.router.location.pathname;
         this.state = {
             hoveredLinkId: null,
             isOpenCart: false,
-            activeLink: window.location.pathname,
+            activeLink: this.getActiveLink(currentPath),
         };
 
         this.hoverNavLink = this.hoverNavLink.bind(this);
         this.toggleCart = this.toggleCart.bind(this);
-    };
-
-    hoverNavLink(linkId) {
-        this.setState({ hoveredLinkId: linkId })
-    };
-
-    toggleCart() {
-        this.setState(prevState => {
-            return {
-                isOpenCart: !prevState.isOpenCart
-            }
-        })
-    };
-
+        this.setActiveLink = this.setActiveLink.bind(this);
+        this.clearActiveLink = this.clearActiveLink.bind(this);
+    }
     componentDidMount() {
-        const activeLink = window.location.pathname;
+        const activeLink = localStorage.getItem('activeLink');
+        if (activeLink) {
+            this.setState({ activeLink });
+        }
+        window.addEventListener('beforeunload', this.clearActiveLink);
     }
 
-    componentDidUpdate(prevProps, prevState) {
-        const activeLink = window.location.pathname;
-        if (prevState.activeLink !== activeLink) {
-            this.setState({ activeLink });
+    componentWillUnmount() {
+        window.removeEventListener('beforeunload', this.clearActiveLink);
+    }
+
+    clearActiveLink() {
+        localStorage.removeItem('activeLink');
+    }
+
+    componentDidUpdate(prevProps) {
+        const { location } = this.props.router;
+        if (prevProps.router.location.pathname !== location.pathname) {
+            this.setActiveLink(location.pathname);
         }
     }
 
+    getActiveLink(pathname) {
+        const validPaths = ['/all', '/clothes', '/tech'];
+        if (validPaths.includes(pathname)) {
+            return pathname;
+        }
+        return localStorage.getItem('activeLink');
+    }
+
+    setActiveLink(pathname) {
+        const newActiveLink = this.getActiveLink(pathname);
+        localStorage.setItem('activeLink', newActiveLink);
+        this.setState({ activeLink: newActiveLink });
+    }
+
+
+    hoverNavLink(linkId) {
+        this.setState({ hoveredLinkId: linkId });
+    }
+
+    toggleCart() {
+        this.setState((prevState) => ({
+            isOpenCart: !prevState.isOpenCart,
+        }));
+    }
+
     render() {
-        const { isOpenCart } = this.state;
+        const { isOpenCart, activeLink } = this.state;
         return (
             <CartConsumer>
-                {props => {
+                {(props) => {
                     const { totalNumber } = props;
                     return (
                         <>
-                            <div className='sticky top-0 lef-0 w-full h-full z-30 bg-white'>
-                                <nav className='grid grid-cols-7 text-base font-medium z-30 bg-white px-4 pt-2 h-[60px] main-container'>
-                                    <ul className='flex flex-row items-center gap-4 col-span-3'>
-                                        {navlinks.map(navlink => (
+                            <div className='sticky top-0 left-0 w-full h-full z-30 bg-white'>
+                                <nav className='grid grid-cols-7 text-base font-medium z-30 bg-white px-4 pt-4 h-[80px] main-container'>
+                                    <ul className='flex flex-row items-center gap-4 col-span-3 h-full'>
+                                        {navlinks.map((navlink) => (
                                             <li
                                                 key={navlink.id}
                                                 className={`uppercase h-full ${this.state.hoveredLinkId === navlink.id && 'active-link'} 
-                                                ${this.state.activeLink === navlink.route && 'active-link'}`}
+                                                ${activeLink === navlink.route && 'active-link'}`}
                                                 onMouseEnter={() => this.hoverNavLink(navlink.id)}
                                                 onMouseLeave={() => this.hoverNavLink(null)}
                                             >
-                                                <Link 
-                                                    className='h-full inline-block' 
+                                                <Link
+                                                    className='h-full inline-block'
                                                     to={navlink.route}
-                                                    data-testid={this.state.activeLink === navlink.route ? 'active-category-link' : 'category-link'}
-                                                    >
-                                                        {navlink.label}
-                                                    </Link>
+                                                    data-testid={activeLink === navlink.route ? 'active-category-link' : 'category-link'}
+                                                >
+                                                    {navlink.label}
+                                                </Link>
                                             </li>
                                         ))}
                                     </ul>
 
                                     <Link to={'/'} className='col-span-1 flex items-center justify-center'>
-                                        <img
-                                            src={logo}
-                                            alt="logo"
-                                        />
+                                        <img src={logo} alt="logo" />
                                     </Link>
 
                                     <div className='col-span-3 flex items-center justify-self-end w-fit relative px-2'>
-                                        <button 
-                                            type='button' 
+                                        <button
+                                            type='button'
                                             onClick={this.toggleCart}
                                             data-testid='cart-btn'
                                         >
@@ -96,15 +122,22 @@ export default class Header extends Component {
                                     </div>
                                 </nav>
                                 {/* //TODO: HANDLE THE CART OVERLAY AND ITS POSITION */}
-
                             </div>
-                            {isOpenCart && <div className="overlay" onClick={this.toggleCart}>
-                                <Cart/>
-                            </div>}
+                            {isOpenCart && (
+                                <div 
+                                    className="overlay" 
+                                    onClick={this.toggleCart}
+                                    data-testid='cart-overlay'
+                                >
+                                    <Cart />
+                                </div>
+                            )}
                         </>
-                    )
+                    );
                 }}
             </CartConsumer>
-        )
+        );
     }
-};
+}
+
+export default withRouter(Header);

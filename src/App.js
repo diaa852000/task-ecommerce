@@ -13,13 +13,10 @@ export default class App extends Component {
         <BrowserRouter>
           <Header />
           <Routes>
-            <Route path='/' element={<Categories />}>
-              <Route index element={<AllCategories />} />
-              <Route path='tech' element={<TechCategory />} />
-              <Route path='clothes' element={<ClothesCategory />} />
-            </Route>
-
-            <Route path='/:id' element={<ProductDetails />} />
+              <Route path='/all' element={<AllCategories />} />
+              <Route path='/tech' element={<TechCategory />} />
+              <Route path='/clothes' element={<ClothesCategory />} />
+            <Route path='product/:id' element={<ProductDetails />} />
           </Routes>
         </BrowserRouter>
       </ApolloProvider>

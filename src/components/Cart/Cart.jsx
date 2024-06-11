@@ -21,7 +21,7 @@ export default class Cart extends Component {
                     return (
                         <div
                             onClick={e => e.stopPropagation()}
-                            className={`absolute top-[60px] right-0 md:right-8 w-full md:w-[400px] z-30 border bg-white p-2 
+                            className={`absolute top-[57px] right-0 md:right-8 w-full md:w-[400px] z-30  bg-white p-2 
                                 ${cart?.length > 3 && 'max-h-[800px] h-full'} flex flex-col`}>
                             <div className='flex flex-col overflow-y-auto'>
                                 <div className='text-sm flex items-start gap-1 mt-2'>
@@ -29,15 +29,17 @@ export default class Cart extends Component {
                                     {totalNumber > 1 ? <p>{totalNumber} items</p> : <p>{totalNumber} item</p>}
                                 </div>
 
-                                {cart && cart?.length > 0 && cart.map((product, i) => (
-                                    <CartItem 
-                                        product={product} 
-                                        key={i} 
-                                        cart={cart} 
-                                        decreaseQuantity={decreaseQuantity}
-                                        increaseQuantity={increaseQuantity}
-                                    />
-                                ))}
+                                <div className='flex flex-col gap-1'>
+                                    {cart && cart?.length > 0 && cart.map((product, i) => (
+                                        <CartItem
+                                            product={product}
+                                            key={i}
+                                            cart={cart}
+                                            decreaseQuantity={decreaseQuantity}
+                                            increaseQuantity={increaseQuantity}
+                                        />
+                                    ))}
+                                </div>
                             </div>
                             <div className='flex flex-col flex-1 gap-6 mt-2'>
                                 <div className='flex items-center justify-between'>

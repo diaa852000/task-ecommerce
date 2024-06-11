@@ -48,13 +48,13 @@ class ProductDetails extends Component {
 
     handleOnSubmit(e, callback) {
         const { formData, formMsg } = this.state;
-        const validMsg = "Successfully added to cart!";
-        const inValidMsg = "Unsuccessfully added to cart! Please choose all attributes";
+        // const validMsg = "Successfully added to cart!";
+        const inValidMsg = "Please choose all attributes";
 
         e.preventDefault();
 
         const isValid = this.checkFormValidation();
-        this.setState({ formMsg: isValid ? validMsg : inValidMsg });
+        this.setState({ formMsg: !isValid ? inValidMsg : null });
 
         if (!isValid) return;
 
@@ -236,7 +236,7 @@ class ProductDetails extends Component {
                                         >
                                             add to cart
                                         </button>
-                                        {formMsg.trim().length > 0 && <p className='text-sm capitalize mt-2'>{formMsg}</p>}
+                                        {formMsg?.trim()?.length > 0 && <p className='text-sm capitalize mt-2'>{formMsg}</p>}
                                     </div>
                                     <div 
                                         data-testid='product-description'

@@ -5,19 +5,16 @@ import { toKebabCase } from '../../helpers';
 
 
 export default class CartItem extends Component {
-    constructor(props){
-        super(props);
-    }
 
 
     render() {
         const { product, decreaseQuantity, increaseQuantity } = this.props;
         return (
-            <div className='mt-4 flex flex-1 gap-1'>
-                <div className='flex flex-col flex-1'>
+            <div className='mt-4 flex flex-1 gap-2'>
+                <div className='flex flex-col flex-1 gap-1'>
                     <h3 className='font-light'>{product?.name}</h3>
                     <h3 className='font-medium text-sm mt-2'>{product?.prices[0]?.amount * product?.quantity}</h3>
-                    <div className=''>
+                    {/* <div className=''> */}
                         {product && product?.attributes?.map((attribute, i) => (
                             <div 
                                 key={i}
@@ -70,7 +67,7 @@ export default class CartItem extends Component {
                                 </div>
                             </div>
                         ))}
-                    </div>
+                    {/* </div> */}
                 </div>
 
                 <div className='flex flex-1 gap-2'>

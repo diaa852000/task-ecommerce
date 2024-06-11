@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { ProductCard } from '../../components';
 import { Query } from '@apollo/client/react/components';
 import { getProductsQuery } from '../../lib/query';
-import { CartConsumer } from '../../contexts/CartContext';
 
 class AllCategories extends Component {
 
@@ -14,21 +13,14 @@ class AllCategories extends Component {
                     if (error) return <p>Error: {error.message}</p>;
 
                     return (
-                        <CartConsumer>
-                            {props => {
-                                const {addToCart } = props;
-                                return (
-                                    <>
-                                        <div className='category-title'>all</div>
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
-                                            {data?.products?.map(product => (
-                                                <ProductCard product={product} key={product.id} />
-                                            ))}
-                                        </div>
-                                    </>
-                                )
-                            }}
-                        </CartConsumer>
+                        <div className="main-container content-padding mt-8">
+                            <div className='category-title'>all</div>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+                                {data?.products?.map(product => (
+                                    <ProductCard product={product} key={product.id} />
+                                ))}
+                            </div>
+                        </div>
                     )
                 }}
             </Query>

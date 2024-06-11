@@ -10,10 +10,14 @@ export class CartProvider extends Component {
     constructor(props) {
         super(props);
 
+        const savedCart = JSON.parse(localStorage.getItem('cart')) || [];
+        const saveTotalNumber = savedCart?.reduce((total, item) => total + item?.quantity, 0);
+        const savedTotalAmount = savedCart?.reduce((sum, item) => sum + item?.prices[0]?.amount * item?.quantity, 0)?.toFixed(2);
+
         this.state = {
-            cart: [],
-            totalNumber: 0,
-            totalAmount: 0,
+            cart: savedCart,
+            totalNumber: saveTotalNumber,
+            totalAmount: savedTotalAmount,
         }
 
         this.addToCart = this.addToCart.bind(this);
@@ -104,6 +108,8 @@ export class CartProvider extends Component {
             const fixedTotlaAmount = totalAmount.toFixed(2);
 
             this.setState({ totalAmount: fixedTotlaAmount });
+
+            localStorage.setItem('cart', JSON.stringify(this.state.cart));
         }
     }
 
