@@ -47,7 +47,7 @@ class Header extends Component {
     }
 
     getActiveLink(pathname) {
-        const validPaths = ['/all', '/clothes', '/tech'];
+        const validPaths = ['/', '/clothes', '/tech'];
         if (validPaths.includes(pathname)) {
             return pathname;
         }
@@ -89,11 +89,13 @@ class Header extends Component {
                                                 ${activeLink === navlink.route && 'active-link'}`}
                                                 onMouseEnter={() => this.hoverNavLink(navlink.id)}
                                                 onMouseLeave={() => this.hoverNavLink(null)}
+                                                data-testid={activeLink === navlink.route ? 'active-category-link' : 'category-link'}
                                             >
                                                 <Link
                                                     className='h-full inline-block'
                                                     to={navlink.route}
-                                                    data-testid={activeLink === navlink.route ? 'active-category-link' : 'category-link'}
+                                                    // data-testid={activeLink === navlink.route ? 'active-category-link' : 'category-link'}
+                                                    data-testid='active-category-link'
                                                 >
                                                     {navlink.label}
                                                 </Link>
@@ -101,7 +103,10 @@ class Header extends Component {
                                         ))}
                                     </ul>
 
-                                    <Link to={'/'} className='col-span-1 flex items-center justify-center'>
+                                    <Link 
+                                        to={'/'} 
+                                        className='col-span-1 flex items-center justify-center'
+                                    >
                                         <img src={logo} alt="logo" />
                                     </Link>
 

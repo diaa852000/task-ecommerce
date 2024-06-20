@@ -10,7 +10,7 @@ class AllCategories extends Component {
             <Query query={getProductsQuery}>
                 {({ loading, error, data }) => {
                     if (loading) return <p>Loading...</p>;
-                    if (error) return <p>Error: {error.message}</p>;
+                    if (error) return <p>Error: {error.message}</p>
 
                     return (
                         <div className="main-container content-padding mt-8">

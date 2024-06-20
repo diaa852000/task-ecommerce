@@ -48,7 +48,6 @@ class ProductDetails extends Component {
 
     handleOnSubmit(e, callback) {
         const { formData, formMsg } = this.state;
-        // const validMsg = "Successfully added to cart!";
         const inValidMsg = "Please choose all attributes";
 
         e.preventDefault();
